@@ -42,7 +42,9 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('wishlist:login')
+    response = HttpResponseRedirect(reverse('wishlist:login'))
+    response.delete_cookie('last_login')
+    return response
 
 @login_required(login_url='/wishlist/login/')
 def show_wishlist(request):
