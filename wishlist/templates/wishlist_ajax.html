@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    $.get("http://127.0.0.1:8000/wishlist/json", function(data) {
+
+          for (i = 0; i<data.length; i++) {
+              $(".barang").append(
+                  `<tr>
+                      <td>${data[i].fields.nama_barang}</td>
+                      <td>${data[i].fields.harga_barang}</td>
+                      <td>${data[i].fields.deskripsi}</td>
+                  </tr>`
+              )
+          }
+
+    }); 
+  });
+
+  $("#submission").click(function() {
+    $.post("http://127.0.0.1:8000/wishlist/ajax/submit", {
+      nama_barang : $("#nama_barang".val()),
+      harga_barang : parseInt($("#harga_barang".val())),
+      deskripsi : $("#deskripsi".val()),
+    })
+  })
+  </script>
+</head>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Wishlist</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'wishlist:show_wishlist' %}">Home</a>
+        </li>
+      </ul>
+      <a href="{% url 'wishlist:logout' %}" class="navbar-item btn btn-sm btn-outline-secondary" type="button" >Logout</a>
+    </div>
+</nav>
+
+<div class="mx-5 my-3">
+    <h5>Nama: </h5>
+    <p>{{nama}}</p>
+
+    <table class="barang table table-striped">
+        <tr class="table-dark">
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+        </tr>
+    </table>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      <table style="margin: 0px auto;">
+        <tr>
+            <td><input type="text" name="nama_barang" placeholder="Nama Barang" class="form-control"></td>
+        </tr>
+                
+        <tr>
+            <td><input type="text" name="harga_barang" placeholder="Harga Barang" class="form-control"></td>
+        </tr>
+
+        <tr>
+          <td><input type="text" name="deskripsi" placeholder="Deskripsi" class="form-control"></td>
+      </tr>
+    </table>
+    <input id="submission" class="btn btn-primary my-3" type="submit" value="Submit">
+    </form>
+
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+</div>
+
+{% endblock content %}

@@ -6,28 +6,22 @@
 
 {% block content %}
 
-<div class = "login">
+<div class = "login" style="text-align: center;">
 
-    <h1>Login</h1>
+    <h1 class="my-5">Login</h1>
 
     <form method="POST" action="">
         {% csrf_token %}
-        <table>
+        <table style="margin: 0px auto;">
             <tr>
-                <td>Username: </td>
                 <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
             </tr>
                     
             <tr>
-                <td>Password: </td>
                 <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
             </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
         </table>
+        <input class="btn btn-primary my-3" type="submit" value="Login">
     </form>
 
     {% if messages %}

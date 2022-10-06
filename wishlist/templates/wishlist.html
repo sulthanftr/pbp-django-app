@@ -1,27 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h5>Nama: </h5>
-<p>{{nama}}</p>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Wishlist</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'wishlist:show_wishlist' %}">Home</a>
+        </li>
+      </ul>
+      <a href="{% url 'wishlist:logout' %}" class="navbar-item btn btn-sm btn-outline-secondary" type="button" >Logout</a>
+    </div>
+</nav>
 
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
-    
-    {% for barang in list_barang %}
-    <tr>
-        <th>{{barang.nama_barang}}</th>
-        <th>{{barang.harga_barang}}</th>
-        <th>{{barang.deskripsi}}</th>
-    </tr>
-    {% endfor %}
-</table>
+<div class="mx-5 my-3">
+    <h5>Nama: </h5>
+    <p>{{nama}}</p>
 
-<h5>Sesi terakhir login: {{ last_login }}</h5>
+    <table class="table table-striped">
+        <tr class="table-dark">
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+        </tr>
+        
+        {% for barang in list_barang %}
+        <tr>
+            <th>{{barang.nama_barang}}</th>
+            <th>{{barang.harga_barang}}</th>
+            <th>{{barang.deskripsi}}</th>
+        </tr>
+        {% endfor %}
+    </table>
 
-<button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+</div>
+
 
 {% endblock content %}
