@@ -3,7 +3,7 @@ from email import message
 from django.shortcuts import render
 from django.template import context
 from wishlist.models import BarangWishlist
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, response
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse, response
 from django.core import serializers
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 def register(request):
     form = UserCreationForm()
@@ -79,12 +80,12 @@ def show_ajax(request):
     }
     return render(request, "wishlist_ajax.html", context)
 
+@csrf_exempt
 def submit_ajax(request):
     if request.method=="POST":
         nama_barang = request.POST.get('nama_barang')
         harga_barang = request.POST.get('harga_barang')
         deskripsi = request.POST.get('deskripsi')
         BarangWishlist.objects.create(nama_barang=nama_barang, harga_barang=harga_barang, deskripsi=deskripsi)
-        response = HttpResponseRedirect(reverse('wishlist:show_ajax'))
-
-    return response
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseBadRequest("POST method required")
